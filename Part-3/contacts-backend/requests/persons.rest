@@ -1,0 +1,50 @@
+GET http://localhost:3001/api/persons
+
+###
+GET http://localhost:3001/api/persons/1
+
+### 
+GET http://localhost:3001/info
+
+###
+DELETE http://localhost:3001/api/persons/2
+
+###
+POST http://localhost:3001/api/persons
+Content-Type: application/json 
+
+{
+    "number": "114514"
+}
+
+###
+POST http://localhost:3001/api/persons
+Content-Type: application/json 
+
+{
+    "name": "harry potter"
+}
+
+###
+POST http://localhost:3001/api/persons
+Content-Type: application/json 
+
+{
+    "name": "Arto Hellas",
+    "number": "114514"
+}
+
+###
+POST http://localhost:3001/api/persons
+Content-Type: application/json 
+
+{
+    "name": "Harry Potter",
+    "number": "114514"
+}
+
+### 
+HEAD http://localhost:3001/api/persons
+
+###
+GET http://localhost:3001/api/et
