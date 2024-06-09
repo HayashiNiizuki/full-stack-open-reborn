@@ -1,0 +1,14 @@
+note over browser:
+browser executes the onsubmit function(this defined when window load?)
+1. stop the default action
+2. create `note` and add it to notes
+3. redrawNotes()
+4. sendToServer(note)
+end note
+
+browser->server: HTTP POST https://studies.cs.helsinki.fi/exampleapp/new_note_spa with payload {content: kfcvme50again...}
+note over server:
+1. save content
+2. send 201 Created
+end note
+server-->browser: 201 Created
