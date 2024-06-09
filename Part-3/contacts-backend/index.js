@@ -7,6 +7,7 @@ const app = express()
 app.use(express.json())
 app.use(cors())
 app.use(morgan('tiny'))
+app.use(express.static('build'))
 
 morgan.token('body', (req) => JSON.stringify(req.body))
 app.use(
@@ -37,6 +38,11 @@ let contacts = [
         "id": 4,
         "name": "Mary Poppendieck",
         "number": "39-23-6423122"
+    },
+    {
+        "id": 5,
+        "name": "Harry Potter",
+        "number": "+86-176-7315-3396"
     }
 ]
 
@@ -94,6 +100,6 @@ app.head('/api/contacts', (request, response) => {
     return response.status(200).end()
 })
 
-const PORT = 3001
+const PORT = process.env.PORT || 3001
 app.listen(PORT)
 console.log(`Server running on port ${PORT}`)
