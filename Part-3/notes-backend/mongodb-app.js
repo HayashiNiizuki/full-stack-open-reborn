@@ -5,7 +5,7 @@ const mongoose = require('mongoose');
 const uri = process.env.MONGO_URI;
 
 // 连接到 MongoDB
-mongoose.connect(uri, { useNewUrlParser: true, useUnifiedTopology: true });
+mongoose.connect(uri);
 
 const db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error:'));
@@ -16,6 +16,7 @@ db.once('open', async () => {
     const noteSchema = new mongoose.Schema({
         content: String,
         important: Boolean,
+        date: Date,
     })
 
     // 创建一个 Model
@@ -27,6 +28,7 @@ db.once('open', async () => {
         const note = new Note({
             content: 'HTML is easy',
             important: true,
+            date: new Date(),
         })
 
         const savedNote = await note.save();
