@@ -21,6 +21,8 @@ const App = () => {
 
   const addNewName = (event) => {
     event.preventDefault()
+    console.log(newName)
+    console.log(newNumber)
     for (let index = 0; index < contacts.length; index++) {
       const person = contacts[index]
       if (person.name === newName) {
@@ -30,11 +32,13 @@ const App = () => {
         } else if (window.confirm(`${person.name} is exist in contacts, wanna update his/her number?`)) {
           contactService.update(person.id, { number: newNumber })
             .then(res => {
+              console.log(res)
               let newC = contacts
               newC[index] = res
               setContacts(newC)
               event.target.reset()
-              setNotion(`${person.name}'s number is updated to${newNumber}`)
+              console.log(contacts)
+              setNotion(`${person.name}'s number is updated to ${newNumber}`)
               setTimeout(() => {
                 setNotion(null)
               }, 5000)

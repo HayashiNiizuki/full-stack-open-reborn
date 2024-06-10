@@ -21,7 +21,7 @@ app.get('/api/contacts', (request, response) => {
 app.get('/api/contacts/:id', (request, response) => {
     Contact.findById(request.params.id).then(contact => {
         response.json(contact)
-    })
+    }).catch(error => next(error))
 })
 
 app.get('/info', async (request, response) => {
@@ -44,9 +44,26 @@ app.delete('/api/contacts/:id', (request, response) => {
             }
             response.status(204).end();
         })
-        .catch(error => {
-            response.status(500).json({ error: 'an error occurred while deleting the contact' });
-        })
+        .catch(error => next(error))
+})
+
+app.patch('/api/contacts/:id', (request, response) => {
+    const id = request.params.id
+    const body = request.body
+
+    if (!body) {
+        return response.status(400).json({ error: "content missing" })
+    } else if (!body.number) {
+        return response.status(400).json({ error: "number missing" })
+    }
+
+    Contact.findByIdAndUpdate(
+        id,
+        { number: body.number },
+        { new: true, runValidators: true, context: 'query' }
+    )
+        .then(updatedContact => response.json(updatedContact))
+        .catch(error => next(error))
 })
 
 app.post('/api/contacts', async (request, response) => {
@@ -82,6 +99,24 @@ app.post('/api/contacts', async (request, response) => {
 app.head('/api/contacts', (request, response) => {
     return response.status(200).end()
 })
+
+const unknownEndpoint = (request, response) => {
+    response.status(404).send({ error: 'unknown endpoint' })
+}
+
+// handler of requests with unknown endpoint
+app.use(unknownEndpoint)
+
+const errorHandler = (error, request, response, next) => {
+    console.error(error.message)
+    if (error.name === 'CastError') {
+        return response.status(400).send({ error: 'malformatted id' })
+    }
+    next(error)
+}
+
+// this has to be the last loaded middleware, also all the routes should be registered before this!
+app.use(errorHandler)
 
 const PORT = process.env.PORT || 3001
 app.listen(PORT)
