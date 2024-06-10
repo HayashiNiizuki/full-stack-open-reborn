@@ -1,9 +1,9 @@
 const express = require("express")
 const morgan = require("morgan")
 const cors = require('cors')
+const Contact = require('./models/contact')
 
 const app = express()
-
 app.use(express.json())
 app.use(cors())
 app.use(morgan('tiny'))
@@ -14,66 +14,42 @@ app.use(
     morgan(':method :url :status :res[content-length] - :response-time ms :body')
 );
 
-const generateId = () => {
-    return Math.floor(Math.random() * 10e20)
-}
-
-let contacts = [
-    {
-        "id": 1,
-        "name": "Arto Hellas",
-        "number": "040-123456"
-    },
-    {
-        "id": 2,
-        "name": "Ada Lovelace",
-        "number": "39-44-5323523"
-    },
-    {
-        "id": 3,
-        "name": "Dan Abramov",
-        "number": "12-43-234345"
-    },
-    {
-        "id": 4,
-        "name": "Mary Poppendieck",
-        "number": "39-23-6423122"
-    },
-    {
-        "id": 5,
-        "name": "Harry Potter",
-        "number": "+86-176-7315-3396"
-    }
-]
-
 app.get('/api/contacts', (request, response) => {
-    return response.json(contacts)
+    Contact.find({}).then(contacts => response.json(contacts))
 })
 
 app.get('/api/contacts/:id', (request, response) => {
-    const id = Number(request.params.id)
-    const person = contacts.find(p => p.id === id)
-    if (person != null) {
-        return response.status(200).json(person)
-    } else {
-        return response.status(404).end()
-    }
+    Contact.findById(request.params.id).then(contact => {
+        response.json(contact)
+    })
 })
 
-app.get('/info', (request, response) => {
+app.get('/info', async (request, response) => {
+    const count = await Contact.countDocuments({})
     return response.send(
-        `<div>Phonebook has info for ${contacts.length} person.</div>
+        `<div>Phonebook has info for ${count} person.</div>
         <div>${new Date()}</div>`
     )
 })
 
 app.delete('/api/contacts/:id', (request, response) => {
-    const id = Number(request.params.id)
-    contacts = contacts.filter(person => person.id != id)
-    return response.status(204).end()
+    const id = request.params.id
+
+    Contact.findByIdAndDelete(id)
+        .then(deletedContact => {
+            if (!deletedContact) {
+                return response.status(404).json({
+                    error: 'contact not found'
+                });
+            }
+            response.status(204).end();
+        })
+        .catch(error => {
+            response.status(500).json({ error: 'an error occurred while deleting the contact' });
+        })
 })
 
-app.post('/api/contacts', (request, response) => {
+app.post('/api/contacts', async (request, response) => {
     const body = request.body
 
     if (!body) {
@@ -82,18 +58,25 @@ app.post('/api/contacts', (request, response) => {
         return response.status(400).json({ error: "name missing" })
     } else if (!body.number) {
         return response.status(400).json({ error: "number missing" })
-    } else if (contacts.find(p => p.name === body.name)) {
+    }
+
+    existObj = await Contact.findOne({ name: body.name })
+    if (existObj) {
         return response.status(400).json({ error: "person exists" })
-    }
+    } else {
+        const contact = new Contact({
+            name: body.name,
+            number: body.number
+        })
 
-    const person = {
-        id: generateId(),
-        name: body.name,
-        number: body.number
+        contact.save()
+            .then(savedContact => {
+                return response.json(savedContact)
+            })
+            .catch(error => {
+                response.status(500).json({ error: 'an error occurred while saving the cobtact' })
+            })
     }
-
-    contacts = contacts.concat(person)
-    return response.status(200).json(person)
 })
 
 app.head('/api/contacts', (request, response) => {
