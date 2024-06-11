@@ -15,7 +15,7 @@ const App = () => {
       important: Math.random() < 0.5,
       id: notes.length + 1,
     }
-    
+
     noteService.create(noteObj).then(
       returnNote => {
         setNotes(notes.concat(returnNote))
