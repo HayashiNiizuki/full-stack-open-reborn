@@ -13,11 +13,11 @@ app.get('/', (request, response) => {
   response.send('<h1>Hello World!</h1>')
 })
 
-app.get('/api/notes', (request, response) => {
+app.get('/api/notes', (request, response, next) => {
   Note.find({}).then(notes => { response.json(notes) })
 })
 
-app.get('/api/notes/:id', (request, response) => {
+app.get('/api/notes/:id', (request, response, next) => {
   Note.findById(request.params.id)
     .then(note => {
       if (note) {
@@ -29,7 +29,7 @@ app.get('/api/notes/:id', (request, response) => {
     .catch(error => next(error))
 })
 
-app.delete('/api/notes/:id', (request, response) => {
+app.delete('/api/notes/:id', (request, response, next) => {
   const id = request.params.id
 
   Note.findByIdAndDelete(id)
@@ -44,7 +44,7 @@ app.delete('/api/notes/:id', (request, response) => {
     .catch(error => next(error))
 })
 
-app.post('/api/notes', (request, response) => {
+app.post('/api/notes', (request, response, next) => {
   const body = request.body
   if (!body.content) {
     return response.status(400).json({
@@ -62,9 +62,7 @@ app.post('/api/notes', (request, response) => {
     .then(savedNote => {
       response.json(savedNote);
     })
-    .catch(error => {
-      response.status(500).json({ error: 'an error occurred while saving the note' });
-    });
+    .catch(error => next(error));
 })
 
 const unknownEndpoint = (request, response) => {
@@ -78,7 +76,10 @@ const errorHandler = (error, request, response, next) => {
   console.error(error.message)
   if (error.name === 'CastError') {
     return response.status(400).send({ error: 'malformatted id' })
+  } else if (error.name === 'ValidationError') {
+    return response.status(400).json({ error: error.message })
   }
+
   next(error)
 }
 

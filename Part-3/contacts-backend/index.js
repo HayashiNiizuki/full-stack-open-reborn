@@ -18,7 +18,7 @@ app.get('/api/contacts', (request, response) => {
   Contact.find({}).then(contacts => response.json(contacts))
 })
 
-app.get('/api/contacts/:id', (request, response) => {
+app.get('/api/contacts/:id', (request, response, next) => {
   Contact.findById(request.params.id).then(contact => {
     response.json(contact)
   }).catch(error => next(error))
@@ -32,7 +32,7 @@ app.get('/info', async (request, response) => {
   )
 })
 
-app.delete('/api/contacts/:id', (request, response) => {
+app.delete('/api/contacts/:id', (request, response, next) => {
   const id = request.params.id
 
   Contact.findByIdAndDelete(id)
@@ -47,7 +47,7 @@ app.delete('/api/contacts/:id', (request, response) => {
     .catch(error => next(error))
 })
 
-app.patch('/api/contacts/:id', (request, response) => {
+app.patch('/api/contacts/:id', (request, response, next) => {
   const id = request.params.id
   const body = request.body
 
@@ -66,7 +66,7 @@ app.patch('/api/contacts/:id', (request, response) => {
     .catch(error => next(error))
 })
 
-app.post('/api/contacts', async (request, response) => {
+app.post('/api/contacts', async (request, response, next) => {
   const body = request.body
 
   if (!body) {
