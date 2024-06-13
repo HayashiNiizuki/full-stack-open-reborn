@@ -1,10 +1,5 @@
 const mongoose = require('mongoose')
 
-require('dotenv').config()
-const uri = process.env.MONGO_URI;
-mongoose.set('strictQuery', false)
-mongoose.connect(uri)
-
 const noteSchema = new mongoose.Schema({
   content: {
     type: String,
