@@ -1,0 +1,16 @@
+GET http://localhost:3001/api/notes
+
+###
+GET http://localhost:3001/api/notes/666674067364664921a9d027
+
+###
+DELETE http://localhost:3001/api/notes/666674b27364664921a9d030
+
+###
+POST http://localhost:3001/api/notes
+Content-Type: application/json
+
+{
+    "content": "json is a good thing",
+    "important": true
+}
