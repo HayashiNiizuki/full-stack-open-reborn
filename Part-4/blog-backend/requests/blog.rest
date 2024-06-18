@@ -1,0 +1,18 @@
+GET http://localhost:3001/api/blog
+
+###
+GET http://localhost:3001/api/blog/66718bdc76beb0c9a5cc1ee0
+
+###
+DELETE http://localhost:3001/api/blog/66718bdc76beb0c9a5cc1ee0
+
+###
+POST http://localhost:3001/api/blog
+Content-Type: application/json
+
+{
+    "title": "王安忆：我认为这是2000年以后最有趣的小说",
+    "author": "九久读书人",
+    "url": "https://mp.weixin.qq.com/s?__biz=MjM5NDU3ODYwMQ==&mid=2650815114&idx=1&sn=bc25f37a3bacb82cb10b06ce0112e607",
+    "likes": 12
+}
