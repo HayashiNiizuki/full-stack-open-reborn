@@ -7,6 +7,7 @@ const middleware = require('./utils/middleware')
 const logger = require('./utils/logger')
 const mongoose = require('mongoose')
 const morgan = require('morgan')
+require('express-async-errors')
 
 mongoose.set('strictQuery', false)
 
@@ -26,7 +27,7 @@ app.use(cors())
 app.use(morgan('tiny'))
 app.use(express.static('build'))
 app.use(middleware.requestLogger)
-app.use('/api/blog', blogRouter)
+app.use('/api/blogs', blogRouter)
 app.use(middleware.unknownEndpoint)
 app.use(middleware.errorHandler)
 
