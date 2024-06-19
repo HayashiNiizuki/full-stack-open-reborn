@@ -84,6 +84,34 @@ test('blog add without url will get 400', async () => {
     .expect('Content-Type', /application\/json/)
 })
 
+test('blog delete test', async () => {
+  const blogsAtStart = await helper.blogsInDb()
+  const blogToDelete = blogsAtStart[0]
+
+  await api
+    .delete(`/api/blogs/${blogToDelete.id}`)
+    .expect(204)
+
+  const blogsAtEnd = await helper.blogsInDb()
+
+  assert.strictEqual(blogsAtEnd.length, helper.initialBlogs.length - 1)
+
+  const contents = blogsAtEnd.map(r => r.url)
+  assert(!contents.includes(blogToDelete.url))
+})
+
+test('blog update test', async () => {
+  const blogsAtStart = await helper.blogsInDb()
+  const blogBefore = blogsAtStart[0]
+
+  const blogAfter = await api
+    .put(`/api/blogs/${blogBefore.id}`)
+    .send({ likes: blogBefore.likes + 1 })
+    .expect(200)
+
+  assert.strictEqual(blogBefore.likes, blogAfter.body.likes - 1)
+})
+
 after(async () => {
   await mongoose.connection.close()
 })
