@@ -9,10 +9,10 @@ DELETE http://localhost:3001/api/notes/666aee0fdc222b876f3300dc
 ###
 POST http://localhost:3001/api/notes
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InJvb3QiLCJpZCI6IjY2NzJlZmY1ODhlNjMzYzVhNDA4N2MwYSIsImlhdCI6MTcxODgxMDA0N30.Vqelua89QUQ6AevCbIhJVY3FhjKQUbgdqOy_2KvJWgw
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InJvb3QiLCJpZCI6IjY2NzJlZmY1ODhlNjMzYzVhNDA4N2MwYSIsImlhdCI6MTcxODgxMDU1NywiZXhwIjoxNzE4ODE0MTU3fQ.Hc7YczV6ACLEhk_65zdg1me6C9fruDPwJhcnBO5v7bA
 
 {
-    "content": "Use token again",
+    "content": "Use token",
     "important": true,
     "userId": "6672eff588e633c5a4087c0a"
 }
