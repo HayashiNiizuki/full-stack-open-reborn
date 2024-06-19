@@ -2,7 +2,7 @@ require('dotenv').config();
 const mongoose = require('mongoose');
 
 // 从 .env 文件加载 MongoDB URI
-const uri = process.env.MONGO_URI;
+const uri = process.env.MONGODB_URI;
 
 // 连接到 MongoDB
 mongoose.connect(uri);
