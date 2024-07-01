@@ -2,18 +2,33 @@ const { test, after, beforeEach } = require('node:test')
 const assert = require('node:assert')
 const supertest = require('supertest')
 const mongoose = require('mongoose')
+const bcrypt = require('bcrypt')
 
 const helper = require('./test_helper')
 const app = require('../app')
 const api = supertest(app)
 
 const Blog = require('../models/blog')
+const User = require('../models/user')
+let token = ''
 
 beforeEach(async () => {
+  await User.deleteMany({})
   await Blog.deleteMany({})
 
+  const passwordHash = await bcrypt.hash('password', 10)
+  const user = new User({ username: 'testuser', passwordHash })
+
+  await user.save()
+
+  const response = await api
+    .post('/api/login')
+    .send({ username: 'testuser', password: 'password' })
+
+  token = response.body.token
+
   const blogObjects = helper.initialBlogs
-    .map(blog => new Blog(blog))
+    .map(blog => new Blog({...blog, user: user.id}))
   const promiseArray = blogObjects.map(blog => blog.save())
   await Promise.all(promiseArray)
 })
@@ -34,6 +49,7 @@ test('blog can be created by post', async () => {
   }
   await api
     .post('/api/blogs/')
+    .set('Authorization', `Bearer ${token}`)
     .send(newBlog)
     .expect(201)
     .expect('Content-Type', /application\/json/)
@@ -53,6 +69,7 @@ test('blog with out likes will be 0', async () => {
   }
   const addedBlog = await api
     .post('/api/blogs/')
+    .set('Authorization', `Bearer ${token}`)
     .send(newBlog)
     .expect(201)
     .expect('Content-Type', /application\/json/)
@@ -67,6 +84,7 @@ test('blog add without title will get 400', async () => {
   }
   await api
     .post('/api/blogs/')
+    .set('Authorization', `Bearer ${token}`)
     .send(newBlog)
     .expect(400)
     .expect('Content-Type', /application\/json/)
@@ -79,6 +97,7 @@ test('blog add without url will get 400', async () => {
   }
   await api
     .post('/api/blogs/')
+    .set('Authorization', `Bearer ${token}`)
     .send(newBlog)
     .expect(400)
     .expect('Content-Type', /application\/json/)
@@ -90,6 +109,7 @@ test('blog delete test', async () => {
 
   await api
     .delete(`/api/blogs/${blogToDelete.id}`)
+    .set('Authorization', `Bearer ${token}`)
     .expect(204)
 
   const blogsAtEnd = await helper.blogsInDb()
@@ -106,6 +126,7 @@ test('blog update test', async () => {
 
   const blogAfter = await api
     .put(`/api/blogs/${blogBefore.id}`)
+    .set('Authorization', `Bearer ${token}`)
     .send({ likes: blogBefore.likes + 1 })
     .expect(200)
 

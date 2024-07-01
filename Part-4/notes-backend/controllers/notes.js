@@ -17,7 +17,7 @@ notesRouter.get('/', async (request, response) => {
 })
 
 notesRouter.get('/:id', async (request, response) => {
-  const note = await Note.findById(request.params.id)
+  const note = await Note.findById(request.params.id).populate('user', { username: 1, name: 1 })
   if (note) {
     response.json(note)
   } else {
@@ -40,7 +40,11 @@ notesRouter.delete('/:id', async (request, response) => {
 
 notesRouter.post('/', async (request, response) => {
   const body = request.body
-  const decodedToken = jwt.verify(getTokenFrom(request), process.env.SECRET)
+  const token = getTokenFrom(request)
+  if (!token) {
+    return response.status(401).json({ error: 'Token missing' });
+  }
+  const decodedToken = jwt.verify(token, process.env.SECRET)
   if (!decodedToken.id) {
     return response.status(401).json({ error: 'token invalid' })
   }
@@ -57,7 +61,7 @@ notesRouter.post('/', async (request, response) => {
   user.notes = user.notes.concat(savedNote._id)
   await user.save()
 
-  response.json(savedNote)
+  response.status(201).json(savedNote)
 })
 
 notesRouter.put('/:id', async (request, response) => {
