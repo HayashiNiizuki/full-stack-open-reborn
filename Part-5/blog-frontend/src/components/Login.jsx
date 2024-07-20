@@ -1,13 +1,14 @@
-const Login = ({
-  user,
-  username,
-  setUsername,
-  password,
-  setPassword,
-  handleLogin,
-  handleLogout,
-}) => {
+import PropTypes from "prop-types";
+import { useState } from "react";
+
+const Login = ({ user, login, handleLogout }) => {
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
   if (user === null) {
+    const handleLogin = async (event) => {
+      event.preventDefault();
+      await login({ username, password });
+    };
     return (
       <form onSubmit={handleLogin}>
         <div>
@@ -40,5 +41,10 @@ const Login = ({
     );
   }
 };
+
+Login.propTypes = {
+  login: PropTypes.func.isRequired,
+  handleLogout: PropTypes.func.isRequired,
+}
 
 export default Login;
