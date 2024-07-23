@@ -1,19 +1,19 @@
-import axios from "axios"
+import axios from 'axios'
 
-const url = "/"
+const url = '/'
 let token = null
 
-const setToken = newToken => {
+const setToken = (newToken) => {
   token = `Bearer ${newToken}`
 }
 
 const getAll = () => {
-  return axios.get(`${url}api/notes`).then(res => res.data)
+  return axios.get(`${url}api/notes`).then((res) => res.data)
 }
 
-const create = async newNote => {
+const create = async (newNote) => {
   const config = {
-    headers: { Authorization: token },
+    headers: { Authorization: token }
   }
 
   const response = await axios.post(`${url}api/notes`, newNote, config)
@@ -22,11 +22,11 @@ const create = async newNote => {
 
 const update = (id, newNote) => {
   const request = axios.put(`${url}api/notes/${id}`, newNote)
-  return request.then(response => response.data)
+  return request.then((response) => response.data)
 }
 
-const deleteNote = id => {
-  return axios.delete(`${url}api/notes/${id}`).then(res => res.data)
+const deleteNote = (id) => {
+  return axios.delete(`${url}api/notes/${id}`).then((res) => res.data)
 }
 
 const noteService = { getAll, create, update, deleteNote, setToken }

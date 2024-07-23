@@ -3,19 +3,19 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "@testing-library/jest-dom": "^5.17.0",
-    "@testing-library/react": "^13.4.0",
-    "@testing-library/user-event": "^13.5.0",
+    "@vitejs/plugin-react": "^4.3.1",
     "axios": "^1.7.2",
+    "jsdom": "^24.1.1",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "react-scripts": "5.0.1",
+    "vitest": "^2.0.4",
     "web-vitals": "^2.1.4"
   },
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "test": "react-scripts test",
+    "test": "vitest run",
     "eject": "react-scripts eject"
   },
   "eslintConfig": {
@@ -36,5 +36,20 @@
       "last 1 safari version"
     ]
   },
-  "proxy": "http://localhost:3003"
+  "devDependencies": {
+    "@testing-library/jest-dom": "^6.4.7",
+    "@testing-library/react": "^16.0.0",
+    "@testing-library/user-event": "^14.5.2",
+    "@vitest/coverage-v8": "^2.0.4",
+    "eslint-plugin-vitest-globals": "^1.5.0"
+  },
+  "proxy": "http://localhost:3003",
+  "prettier": {
+    "singleQuote": true,
+    "printWidth": 115,
+    "proseWrap": "always",
+    "semi": false,
+    "trailingComma": "none",
+    "htmlWhitespaceSensitivity": "ignore"
+  }
 }

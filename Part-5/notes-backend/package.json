@@ -28,5 +28,13 @@
     "globals": "^15.4.0",
     "nodemon": "^3.1.0",
     "supertest": "^7.0.0"
+  },
+  "prettier": {
+    "singleQuote": true,
+    "printWidth": 115,
+    "proseWrap": "always",
+    "semi": false,
+    "trailingComma": "none",
+    "htmlWhitespaceSensitivity": "ignore"
   }
 }
