@@ -11,16 +11,16 @@ usersRouter.post('/', async (request, response) => {
   const { username, name, password } = request.body
 
   if (!username || !password) {
-    return response.status(400).json({ error: 'Username and password are required' });
+    return response.status(400).json({ error: 'Username and password are required' })
   }
 
   if (username.length < 3 || password.length < 3) {
-    return response.status(400).json({ error: 'Username and password must be at least 3 characters long' });
+    return response.status(400).json({ error: 'Username and password must be at least 3 characters long' })
   }
 
-  const existingUser = await User.findOne({ username });
+  const existingUser = await User.findOne({ username })
   if (existingUser) {
-    return response.status(400).json({ error: 'Username is already taken' });
+    return response.status(400).json({ error: 'Username is already taken' })
   }
 
   const saltRounds = 10
@@ -29,7 +29,7 @@ usersRouter.post('/', async (request, response) => {
   const user = new User({
     username,
     name,
-    passwordHash,
+    passwordHash
   })
 
   const savedUser = await user.save()

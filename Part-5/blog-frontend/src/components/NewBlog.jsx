@@ -1,20 +1,20 @@
-import { useState } from "react";
+import { useState } from 'react'
 
 const NewBlog = ({ addNewBlog }) => {
-  const [title, setTitle] = useState("");
-  const [author, setAuthor] = useState("");
-  const [url, setUrl] = useState("");
+  const [title, setTitle] = useState('')
+  const [author, setAuthor] = useState('')
+  const [url, setUrl] = useState('')
 
   const handleSubmit = async (event) => {
-    event.preventDefault();
-    const newBlog = await addNewBlog({ title, author, url });
+    event.preventDefault()
+    const newBlog = await addNewBlog({ title, author, url })
     if (newBlog) {
-      event.target.reset();
-      setTitle("");
-      setAuthor("");
-      setUrl("");
+      event.target.reset()
+      setTitle('')
+      setAuthor('')
+      setUrl('')
     }
-  };
+  }
 
   return (
     <div>
@@ -23,25 +23,28 @@ const NewBlog = ({ addNewBlog }) => {
         title:
         <input
           value={title}
+          placeholder="type title here"
           onChange={(event) => setTitle(event.target.value)}
         ></input>
         <br />
         author:
         <input
           value={author}
+          placeholder="type author here"
           onChange={(event) => setAuthor(event.target.value)}
         ></input>
         <br />
         url:
         <input
           value={url}
+          placeholder="type your url here"
           onChange={(event) => setUrl(event.target.value)}
         ></input>
         <br />
         <button type="submit">create</button>
       </form>
     </div>
-  );
-};
+  )
+}
 
-export default NewBlog;
+export default NewBlog

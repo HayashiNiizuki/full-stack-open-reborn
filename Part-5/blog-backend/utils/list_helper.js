@@ -12,7 +12,7 @@ const favoriteBlog = (blogs) => {
   if (!blogs || blogs.length === 0) {
     return undefined
   }
-  return blogs.reduce((max, blog) => max.likes > blog.likes ? max : blog, blogs[0])
+  return blogs.reduce((max, blog) => (max.likes > blog.likes ? max : blog), blogs[0])
 }
 
 const mostBlogs = (blogs) => {
@@ -23,8 +23,8 @@ const mostBlogs = (blogs) => {
   const maxAuthor = lodash.maxBy(Object.keys(authorCount), (author) => authorCount[author])
 
   return {
-    "author": maxAuthor,
-    "blogs": authorCount[maxAuthor]
+    author: maxAuthor,
+    blogs: authorCount[maxAuthor]
   }
 }
 

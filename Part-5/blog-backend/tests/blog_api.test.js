@@ -21,15 +21,12 @@ beforeEach(async () => {
 
   await user.save()
 
-  const response = await api
-    .post('/api/login')
-    .send({ username: 'testuser', password: 'password' })
+  const response = await api.post('/api/login').send({ username: 'testuser', password: 'password' })
 
   token = response.body.token
 
-  const blogObjects = helper.initialBlogs
-    .map(blog => new Blog({...blog, user: user.id}))
-  const promiseArray = blogObjects.map(blog => blog.save())
+  const blogObjects = helper.initialBlogs.map((blog) => new Blog({ ...blog, user: user.id }))
+  const promiseArray = blogObjects.map((blog) => blog.save())
   await Promise.all(promiseArray)
 })
 
@@ -42,10 +39,10 @@ test('blogs are returned as json', async () => {
 
 test('blog can be created by post', async () => {
   const newBlog = {
-    "title": "王安忆：我认为这是2000年以后最有趣的小说",
-    "author": "九久读书人",
-    "url": "https://mp.weixin.qq.com/s?__biz=MjM5NDU3ODYwMQ==&mid=2650815114&idx=1&sn=bc25f37a3bacb82cb10b06ce0112e607",
-    "likes": 12
+    title: '王安忆：我认为这是2000年以后最有趣的小说',
+    author: '九久读书人',
+    url: 'https://mp.weixin.qq.com/s?__biz=MjM5NDU3ODYwMQ==&mid=2650815114&idx=1&sn=bc25f37a3bacb82cb10b06ce0112e607',
+    likes: 12
   }
   await api
     .post('/api/blogs/')
@@ -57,15 +54,19 @@ test('blog can be created by post', async () => {
   const blogAtEnd = await helper.blogsInDb()
   assert.strictEqual(blogAtEnd.length, helper.initialBlogs.length + 1)
 
-  const contents = blogAtEnd.map(n => n.url)
-  assert(contents.includes('https://mp.weixin.qq.com/s?__biz=MjM5NDU3ODYwMQ==&mid=2650815114&idx=1&sn=bc25f37a3bacb82cb10b06ce0112e607'))
+  const contents = blogAtEnd.map((n) => n.url)
+  assert(
+    contents.includes(
+      'https://mp.weixin.qq.com/s?__biz=MjM5NDU3ODYwMQ==&mid=2650815114&idx=1&sn=bc25f37a3bacb82cb10b06ce0112e607'
+    )
+  )
 })
 
 test('blog with out likes will be 0', async () => {
   const newBlog = {
-    "title": "王安忆：我认为这是2000年以后最有趣的小说",
-    "author": "九久读书人",
-    "url": "https://mp.weixin.qq.com/s?__biz=MjM5NDU3ODYwMQ==&mid=2650815114&idx=1&sn=bc25f37a3bacb82cb10b06ce0112e607",
+    title: '王安忆：我认为这是2000年以后最有趣的小说',
+    author: '九久读书人',
+    url: 'https://mp.weixin.qq.com/s?__biz=MjM5NDU3ODYwMQ==&mid=2650815114&idx=1&sn=bc25f37a3bacb82cb10b06ce0112e607'
   }
   const addedBlog = await api
     .post('/api/blogs/')
@@ -79,8 +80,8 @@ test('blog with out likes will be 0', async () => {
 
 test('blog add without title will get 400', async () => {
   const newBlog = {
-    "author": "九久读书人",
-    "url": "https://mp.weixin.qq.com/s?__biz=MjM5NDU3ODYwMQ==&mid=2650815114&idx=1&sn=bc25f37a3bacb82cb10b06ce0112e607",
+    author: '九久读书人',
+    url: 'https://mp.weixin.qq.com/s?__biz=MjM5NDU3ODYwMQ==&mid=2650815114&idx=1&sn=bc25f37a3bacb82cb10b06ce0112e607'
   }
   await api
     .post('/api/blogs/')
@@ -92,8 +93,8 @@ test('blog add without title will get 400', async () => {
 
 test('blog add without url will get 400', async () => {
   const newBlog = {
-    "title": "王安忆：我认为这是2000年以后最有趣的小说",
-    "author": "九久读书人",
+    title: '王安忆：我认为这是2000年以后最有趣的小说',
+    author: '九久读书人'
   }
   await api
     .post('/api/blogs/')
@@ -107,16 +108,13 @@ test('blog delete test', async () => {
   const blogsAtStart = await helper.blogsInDb()
   const blogToDelete = blogsAtStart[0]
 
-  await api
-    .delete(`/api/blogs/${blogToDelete.id}`)
-    .set('Authorization', `Bearer ${token}`)
-    .expect(204)
+  await api.delete(`/api/blogs/${blogToDelete.id}`).set('Authorization', `Bearer ${token}`).expect(204)
 
   const blogsAtEnd = await helper.blogsInDb()
 
   assert.strictEqual(blogsAtEnd.length, helper.initialBlogs.length - 1)
 
-  const contents = blogsAtEnd.map(r => r.url)
+  const contents = blogsAtEnd.map((r) => r.url)
   assert(!contents.includes(blogToDelete.url))
 })
 
