@@ -71,3 +71,6 @@ Content-Type: application/json
     "username": "max",
     "password": "271828"
 }
+
+###
+POST http://localhost:3003/api/testing/reset

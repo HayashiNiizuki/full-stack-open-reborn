@@ -37,13 +37,13 @@ const Blog = ({ _blog, canDelete }) => {
     !deleted && (
       <div style={blogStyle} className="Blog">
         {blog.title}
-        <button onClick={(event) => setShowDetail(!showDetail)}>{showDetail ? 'hide' : 'view'}</button>
+        <button id='show-hide-button' onClick={(event) => setShowDetail(!showDetail)}>{showDetail ? 'hide' : 'view'}</button>
         <div style={hideWhenVisible} className='hideContents'>
           <p>{blog.url}</p>
           likes {blog.likes}
-          <button onClick={addLike}>like</button>
+          <button id='like-button' onClick={addLike}>like</button>
           <p>{blog.author}</p>
-          {canDelete && <button onClick={deleteBlog}>Remove</button>}
+          {canDelete && <button id='delete-button' onClick={deleteBlog}>Remove</button>}
         </div>
       </div>
     )
