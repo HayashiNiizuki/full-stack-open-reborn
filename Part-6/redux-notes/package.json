@@ -1,16 +1,16 @@
 {
-  "name": "note-redux",
+  "name": "redux-notes",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "@testing-library/jest-dom": "^5.17.0",
-    "@testing-library/react": "^13.4.0",
-    "@testing-library/user-event": "^13.5.0",
-    "react": "^18.3.1",
-    "react-dom": "^18.3.1",
-    "react-redux": "^9.1.2",
+    "@testing-library/jest-dom": "^5.16.4",
+    "@testing-library/react": "^13.1.1",
+    "@testing-library/user-event": "^14.1.1",
+    "react": "^18.0.0",
+    "react-dom": "^18.0.0",
+    "react-redux": "^8.0.1",
     "react-scripts": "5.0.1",
-    "redux": "^5.0.1",
+    "redux": "^4.2.0",
     "web-vitals": "^2.1.4"
   },
   "scripts": {
@@ -38,14 +38,6 @@
     ]
   },
   "devDependencies": {
-    "deep-freeze": "^0.0.1"
-  },
-  "prettier": {
-    "singleQuote": true,
-    "printWidth": 115,
-    "proseWrap": "always",
-    "semi": false,
-    "trailingComma": "none",
-    "htmlWhitespaceSensitivity": "ignore"
+    "deep-freeze": "0.0.1"
   }
 }
