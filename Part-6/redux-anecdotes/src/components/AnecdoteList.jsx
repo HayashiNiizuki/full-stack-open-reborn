@@ -1,20 +1,46 @@
 import { useSelector, useDispatch } from 'react-redux'
 import { VoteTo } from '../reducers/anecdoteReducer'
+import { showTempNotification } from '../reducers/notificationReducer'
+import { createSelector } from 'reselect'
 
-const AnecdoteList = (props) => {
+const Anecdote = ({ anecdote }) => {
   const dispatch = useDispatch()
-  const anecdotes = useSelector((state) => state.sort((a, b) => b.votes - a.votes))
-
+  const voteHandler = (event) => {
+    event.preventDefault()
+    dispatch(VoteTo(anecdote.id))
+    dispatch(showTempNotification(`You voted for '${anecdote.content}'`, 2))
+  }
   return (
     <div>
-      {anecdotes.map((anecdote) => (
-        <div key={anecdote.id}>
-          <div>{anecdote.content}</div>
-          <div>
-            has {anecdote.votes}
-            <button onClick={() => dispatch(VoteTo(anecdote.id))}>vote</button>
-          </div>
-        </div>
+      <div>{anecdote.content}</div>
+      <div>
+        has {anecdote.votes}
+        <button onClick={voteHandler}>vote</button>
+      </div>
+    </div>
+  )
+}
+
+const selectAnecdotes = (state) => state.anecdotes
+const selectFilterContent = (state) => state.filter.content
+
+// Create a memoized selector for filtered and sorted anecdotes
+const selectFilteredAndSortedAnecdotes = createSelector(
+  [selectAnecdotes, selectFilterContent],
+  (anecdotes, filterContent) => {
+    // Filter and sort anecdotes based on the filter content
+    const filtered = anecdotes.filter((a) => a.content.includes(filterContent))
+    const sorted = filtered.sort((a, b) => b.votes - a.votes)
+    return sorted
+  }
+)
+
+const AnecdoteList = (props) => {
+  const filteredAndSortedAnecdotes = useSelector(selectFilteredAndSortedAnecdotes)
+  return (
+    <div>
+      {filteredAndSortedAnecdotes.map((anecdote) => (
+        <Anecdote key={anecdote.id} anecdote={anecdote} />
       ))}
     </div>
   )
