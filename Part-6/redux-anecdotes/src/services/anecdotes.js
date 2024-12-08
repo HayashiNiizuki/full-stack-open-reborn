@@ -14,4 +14,18 @@ const AddNewAnecdotes = async (content) => {
   return response.data
 }
 
-export default { getAll, AddNewAnecdotes }
+const voteToService = async (id) => {
+  const anecdotes = await getAll()
+  let index = -1
+  for (let i = 0; i < anecdotes.length; i++) {
+    if (anecdotes[i].id == id) {
+      index = i
+      break
+    }
+  }
+  const anecdote = await axios.get(baseUrl + '/' + id)
+  const response = await axios.patch(baseUrl + '/' + id, { votes: anecdote.data.votes + 1 })
+  return response.data
+}
+
+export default { getAll, AddNewAnecdotes, voteToService }

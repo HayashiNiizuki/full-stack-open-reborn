@@ -1,14 +1,14 @@
 import { useSelector, useDispatch } from 'react-redux'
-import { VoteTo } from '../reducers/anecdoteReducer'
-import { showTempNotification } from '../reducers/notificationReducer'
 import { createSelector } from 'reselect'
+import { voteToThunk } from '../reducers/anecdoteReducer'
+import { setNotification } from '../reducers/notificationReducer'
 
 const Anecdote = ({ anecdote }) => {
   const dispatch = useDispatch()
   const voteHandler = (event) => {
     event.preventDefault()
-    dispatch(VoteTo(anecdote.id))
-    dispatch(showTempNotification(`You voted for '${anecdote.content}'`, 2))
+    dispatch(voteToThunk(anecdote.id))
+    dispatch(setNotification(`You voted for '${anecdote.content}'`, 2))
   }
   return (
     <div>

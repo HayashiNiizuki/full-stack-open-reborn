@@ -9,7 +9,7 @@ const Notification = () => {
   const notification = useSelector((state) => {
     return state.notification
   })
-  if (notification.showing) return <div style={style}>{notification.message}</div>
+  if (notification != null) return <div style={style}>{notification}</div>
   else return <div></div>
 }
 
