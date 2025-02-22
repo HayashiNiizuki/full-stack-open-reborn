@@ -31,17 +31,19 @@ const Anecdote = ({ anecdote }) => (
   </div>
 )
 
-const AnecdoteList = ({ anecdotes }) => (
-  <div>
-    <h2>Anecdotes</h2>
-    <ul>
-      {anecdotes.map((anecdote) => (
-        <li key={anecdote.id}>{<Link to={`/anecdotes/${anecdote.id}`}>{anecdote.content}</Link>}</li>
-      ))}
-    </ul>
-  </div>
-)
-
+const AnecdoteList = ({ anecdotes, isVisiable, notification }) => {
+  return (
+    <div>
+      <h2>Anecdotes</h2>
+      <p>{isVisiable ? notification : ''}</p>
+      <ul>
+        {anecdotes.map((anecdote) => (
+          <li key={anecdote.id}>{<Link to={`/anecdotes/${anecdote.id}`}>{anecdote.content}</Link>}</li>
+        ))}
+      </ul>
+    </div>
+  )
+}
 const About = () => (
   <div>
     <h2>About anecdote app</h2>
@@ -83,6 +85,7 @@ const CreateNew = (props) => {
       info,
       votes: 0
     })
+    props.showNotification(`a new anecdote ${content} created!`)
     navigate('/anecdotes')
   }
 
@@ -126,11 +129,12 @@ const App = () => {
     }
   ])
 
+  const [isVisiable, setIsVisiable] = useState(false)
+  const [notification, setNotification] = useState('')
+
   const match = useMatch('/anecdotes/:id')
 
   const anecdote = match ? anecdotes.find((anecdote) => anecdote.id === Number(match.params.id)) : null
-
-  const [notification, setNotification] = useState('')
 
   const addNew = (anecdote) => {
     anecdote.id = Math.round(Math.random() * 10000)
@@ -150,14 +154,26 @@ const App = () => {
     setAnecdotes(anecdotes.map((a) => (a.id === id ? voted : a)))
   }
 
+  const showNotification = (content) => {
+    setNotification(content)
+    setIsVisiable(true)
+    setTimeout(() => {
+      setNotification('')
+      setIsVisiable(false)
+    }, 5000)
+  }
+
   return (
     <div>
       <h1>Software anecdotes</h1>
       <Menu />
       <Routes>
         <Route path="/anecdotes/:id" element={<Anecdote anecdote={anecdote} />} />
-        <Route path="/anecdotes" element={<AnecdoteList anecdotes={anecdotes} />} />
-        <Route path="/create" element={<CreateNew addNew={addNew} />} />
+        <Route
+          path="/anecdotes"
+          element={<AnecdoteList anecdotes={anecdotes} isVisiable={isVisiable} notification={notification} />}
+        />
+        <Route path="/create" element={<CreateNew addNew={addNew} showNotification={showNotification} />} />
         <Route path="/about" element={<About />} />
       </Routes>
       <Footer />
