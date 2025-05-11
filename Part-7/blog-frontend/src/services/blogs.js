@@ -1,4 +1,5 @@
 import axios from 'axios'
+
 const baseUrl = '/api/blogs'
 
 let token = null
@@ -31,7 +32,7 @@ const likeBlog = async ({ id, newBlog }) => {
   return response.data
 }
 
-const deleteBlog = async ({ id }) => {
+const deleteBlog = async (id) => {
   const config = {
     headers: { Authorization: token }
   }

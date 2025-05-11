@@ -1,13 +1,13 @@
-import { useState, useEffect, useRef, useMemo } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import Blog from './components/Blog'
 import Login from './components/Login'
 import NewBlog from './components/NewBlog'
 import Notification from './components/Notification'
 import blogService from './services/blogs'
 import loginService from './services/login'
-import Togglable from './components/Togglable'
+import Toggleable from './components/Toggleable.jsx'
 import './App.css'
-import { initializeBlogs, selectSortedBlogs, addNewBlog } from './reducers/blogReducer'
+import { createBlog, initializeBlogs, selectSortedBlogs } from './reducers/blogReducer'
 import { useDispatch, useSelector } from 'react-redux'
 
 const App = () => {
@@ -21,7 +21,7 @@ const App = () => {
     if (!user) {
       return null
     } else {
-      return blogs.map((blog) => <Blog key={blog.id} _blog={blog} canDelete={blog.user.id === user.id} />)
+      return blogs.map((blog) => <Blog key={blog.id} _blog={blog} canDelete={blog.user.id === user.id}/>)
     }
   }, [blogs, user])
 
@@ -52,7 +52,7 @@ const App = () => {
       setUser(user)
     } catch (exception) {
       console.log(exception)
-      setErrorMessage(`Login Fail`)
+      setErrorMessage('Login Fail')
       setTimeout(() => {
         setErrorMessage(null)
       }, 5000)
@@ -67,7 +67,7 @@ const App = () => {
 
   const addNewBlogFunc = async ({ title, author, url }) => {
     try {
-      const newBlog = await dispatch(addNewBlog({ title, author, url }))
+      const newBlog = await dispatch(createBlog({ title, author, url }))
       newBlogRef.current.toggleVisibility()
       return newBlog
     } catch (exception) {
@@ -79,14 +79,14 @@ const App = () => {
 
   return (
     <div>
-      <Notification message={errorMessage} />
+      <Notification message={errorMessage}/>
       <Login user={user} login={login} handleLogout={handleLogout}></Login>
       <h2>blogs</h2>
       {user && blogItems}
       {user && (
-        <Togglable buttonLabel="New blog" ref={newBlogRef}>
+        <Toggleable buttonLabel="New blog" ref={newBlogRef}>
           <NewBlog addNewBlog={addNewBlogFunc}></NewBlog>
-        </Togglable>
+        </Toggleable>
       )}
     </div>
   )

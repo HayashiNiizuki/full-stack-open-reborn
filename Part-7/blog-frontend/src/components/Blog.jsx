@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import blogService from '../services/blogs'
 import { useDispatch } from 'react-redux'
-import { likeaBlog } from '../reducers/blogReducer'
+import { updateBlog, deleteBlog } from '../reducers/blogReducer'
 
 const Blog = ({ _blog, canDelete }) => {
   const dispatch = useDispatch()
@@ -18,17 +18,17 @@ const Blog = ({ _blog, canDelete }) => {
     marginBottom: 5
   }
 
-  const addLike = async (event) => {
+  const addLike = async (_event) => {
     const newBlog = { ...blog, likes: blog.likes + 1 }
-    const updatedBlog = await dispatch(likeaBlog({ id: blog.id, newBlog }))
+    const updatedBlog = await dispatch(updateBlog({ id: blog.id, newBlog }))
     if (updatedBlog) {
       setBlog(updatedBlog)
     }
   }
 
-  const deleteBlog = async (event) => {
+  const _deleteBlog = async (_event) => {
     if (window.confirm(`Remove blog ${blog.title}`)) {
-      await blogService.deleteBlog({ id: blog.id })
+      await dispatch(deleteBlog(blog.id))
       setDeleted(true)
     }
   }
@@ -37,7 +37,7 @@ const Blog = ({ _blog, canDelete }) => {
     !deleted && (
       <div style={blogStyle} className="Blog">
         {blog.title}
-        <button id="show-hide-button" onClick={(event) => setShowDetail(!showDetail)}>
+        <button id="show-hide-button" onClick={(_event) => setShowDetail(!showDetail)}>
           {showDetail ? 'hide' : 'view'}
         </button>
         <div style={hideWhenVisible} className="hideContents">
@@ -48,7 +48,7 @@ const Blog = ({ _blog, canDelete }) => {
           </button>
           <p>{blog.author}</p>
           {canDelete && (
-            <button id="delete-button" onClick={deleteBlog}>
+            <button id="delete-button" onClick={_deleteBlog}>
               Remove
             </button>
           )}

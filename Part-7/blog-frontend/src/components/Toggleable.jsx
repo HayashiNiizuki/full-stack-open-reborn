@@ -1,7 +1,8 @@
-import { useState, forwardRef, useImperativeHandle } from 'react'
+import { forwardRef, useImperativeHandle, useState } from 'react'
 import PropTypes from 'prop-types'
 
-const Togglable = forwardRef((props, ref) => {
+// eslint-disable-next-line react/display-name
+const Toggleable = forwardRef((props, ref) => {
   const [visible, setVisible] = useState(false)
 
   const hideWhenVisible = { display: visible ? 'none' : '' }
@@ -30,8 +31,8 @@ const Togglable = forwardRef((props, ref) => {
   )
 })
 
-Togglable.prototype = {
+Toggleable.prototype = {
   buttonLabel: PropTypes.string.isRequired
 }
 
-export default Togglable
+export default Toggleable
