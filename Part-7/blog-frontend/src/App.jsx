@@ -1,27 +1,26 @@
-import { useEffect, useMemo, useRef, useState } from 'react'
+import { useEffect, useMemo, useRef } from 'react'
 import Blog from './components/Blog'
 import Login from './components/Login'
 import NewBlog from './components/NewBlog'
 import Notification from './components/Notification'
-import blogService from './services/blogs'
-import loginService from './services/login'
 import Toggleable from './components/Toggleable.jsx'
 import './App.css'
 import { createBlog, initializeBlogs, selectSortedBlogs } from './reducers/blogReducer'
+import { setUser } from './reducers/userReducer.js'
 import { useDispatch, useSelector } from 'react-redux'
 
 const App = () => {
-  const [user, setUser] = useState(null)
-  const [errorMessage, setErrorMessage] = useState(null)
   const dispatch = useDispatch()
 
   const blogs = useSelector(selectSortedBlogs)
+  const user = useSelector((state) => state.user)
+  const errorMessage = useSelector((state) => state.errorMessage)
 
   const blogItems = useMemo(() => {
     if (!user) {
       return null
     } else {
-      return blogs.map((blog) => <Blog key={blog.id} _blog={blog} canDelete={blog.user.id === user.id}/>)
+      return blogs.map((blog) => <Blog key={blog.id} _blog={blog} canDelete={blog.user.id === user.id} />)
     }
   }, [blogs, user])
 
@@ -29,8 +28,7 @@ const App = () => {
     const loggedUserJSON = window.localStorage.getItem('loggedNoteappUser')
     if (loggedUserJSON) {
       const user = JSON.parse(loggedUserJSON)
-      setUser(user)
-      blogService.setToken(user.token)
+      dispatch(setUser(user))
     }
   }, [])
 
@@ -39,31 +37,6 @@ const App = () => {
   }, [dispatch])
 
   const newBlogRef = useRef()
-
-  const login = async ({ username, password }) => {
-    try {
-      const user = await loginService.login({
-        username,
-        password
-      })
-
-      window.localStorage.setItem('loggedNoteappUser', JSON.stringify(user))
-      blogService.setToken(user.token)
-      setUser(user)
-    } catch (exception) {
-      console.log(exception)
-      setErrorMessage('Login Fail')
-      setTimeout(() => {
-        setErrorMessage(null)
-      }, 5000)
-    }
-  }
-
-  const handleLogout = async (event) => {
-    setUser(null)
-    blogService.setToken(null)
-    delete window.localStorage.loggedNoteappUser
-  }
 
   const addNewBlogFunc = async ({ title, author, url }) => {
     try {
@@ -79,8 +52,8 @@ const App = () => {
 
   return (
     <div>
-      <Notification message={errorMessage}/>
-      <Login user={user} login={login} handleLogout={handleLogout}></Login>
+      <Notification message={errorMessage} />
+      <Login></Login>
       <h2>blogs</h2>
       {user && blogItems}
       {user && (
