@@ -14,7 +14,6 @@ const App = () => {
 
   const blogs = useSelector(selectSortedBlogs)
   const user = useSelector((state) => state.user)
-  const errorMessage = useSelector((state) => state.errorMessage)
 
   const blogItems = useMemo(() => {
     if (!user) {
@@ -52,7 +51,7 @@ const App = () => {
 
   return (
     <div>
-      <Notification message={errorMessage} />
+      <Notification />
       <Login></Login>
       <h2>blogs</h2>
       {user && blogItems}
