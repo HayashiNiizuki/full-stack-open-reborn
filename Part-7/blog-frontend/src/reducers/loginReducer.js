@@ -2,8 +2,8 @@ import { createSlice } from '@reduxjs/toolkit'
 import loginService from '../services/login'
 import blogService from '../services/blogs'
 
-const userSlice = createSlice({
-  name: 'user',
+const loginSlice = createSlice({
+  name: 'login',
   initialState: null,
   reducers: {
     login(state, action) {
@@ -15,9 +15,9 @@ const userSlice = createSlice({
   }
 })
 
-export const setUser = (user) => {
+export const setLogin = (user) => {
   return async (dispatch) => {
-    const ruser = await dispatch(userSlice.actions.login(user))
+    const ruser = await dispatch(loginSlice.actions.login(user))
     blogService.setToken(ruser ? ruser.token : null)
   }
 }
@@ -32,8 +32,8 @@ export const login = (username, password) => {
 
       window.localStorage.setItem('loggedNoteappUser', JSON.stringify(user))
       blogService.setToken(user.token)
-      setUser(user)
-      dispatch(userSlice.actions.login(user))
+      setLogin(user)
+      dispatch(loginSlice.actions.login(user))
     } catch (exception) {
       console.log(exception)
     }
@@ -42,11 +42,11 @@ export const login = (username, password) => {
 
 export const logout = () => {
   return (dispatch) => {
-    setUser(null)
+    setLogin(null)
     blogService.setToken(null)
     delete window.localStorage.loggedNoteappUser
-    dispatch(userSlice.actions.logout())
+    dispatch(loginSlice.actions.logout())
   }
 }
 
-export default userSlice.reducer
+export default loginSlice.reducer

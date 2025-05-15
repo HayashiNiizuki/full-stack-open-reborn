@@ -1,13 +1,13 @@
 import { useState } from 'react'
 import { useSelector } from 'react-redux'
-import { login, logout } from '../reducers/userReducer'
+import { login, logout } from '../reducers/loginReducer'
 import { useDispatch } from 'react-redux'
 
 const Login = () => {
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
 
-  const user = useSelector((state) => state.user)
+  const loginfo = useSelector((state) => state.login)
   const dispatch = useDispatch()
 
   const handleLogin = async (event) => {
@@ -19,7 +19,7 @@ const Login = () => {
     event.preventDefault()
     await dispatch(logout())
   }
-  if (user === null) {
+  if (loginfo === null) {
     return (
       <form onSubmit={handleLogin}>
         <div>
@@ -50,7 +50,7 @@ const Login = () => {
   } else {
     return (
       <div>
-        <p>{user.name} logged-in</p>
+        <p>{loginfo.name} logged-in</p>
         <button onClick={handleLogout}>logout</button>
       </div>
     )

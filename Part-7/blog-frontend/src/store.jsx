@@ -1,12 +1,12 @@
 import { configureStore } from '@reduxjs/toolkit'
 import blogReducer from './reducers/blogReducer'
-import userReducer from './reducers/userReducer'
+import loginReducer from './reducers/loginReducer'
 import errorMessageReducer from './reducers/errorMessageReducer'
 
 const store = configureStore({
   reducer: {
     blog: blogReducer,
-    user: userReducer,
+    login: loginReducer,
     errorMessage: errorMessageReducer
   }
 })
