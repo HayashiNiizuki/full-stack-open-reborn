@@ -30,7 +30,7 @@ export const login = (username, password) => {
         password
       })
 
-      window.localStorage.setItem('loggedNoteappUser', JSON.stringify(user))
+      window.localStorage.setItem('loggedBlogAppUser', JSON.stringify(user))
       blogService.setToken(user.token)
       setLogin(user)
       dispatch(loginSlice.actions.login(user))
@@ -44,7 +44,7 @@ export const logout = () => {
   return (dispatch) => {
     setLogin(null)
     blogService.setToken(null)
-    delete window.localStorage.loggedNoteappUser
+    delete window.localStorage.loggedBlogAppUser
     dispatch(loginSlice.actions.logout())
   }
 }

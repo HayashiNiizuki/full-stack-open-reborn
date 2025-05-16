@@ -3,18 +3,22 @@ import Blog from './components/Blog'
 import Login from './components/Login'
 import NewBlog from './components/NewBlog'
 import Notification from './components/Notification'
+import Users from './components/Users'
+import userService from './services/users'
 import Toggleable from './components/Toggleable.jsx'
 import './App.css'
 import { createBlog, initializeBlogs, selectSortedBlogs } from './reducers/blogReducer'
 import { setLogin } from './reducers/loginReducer.js'
 import { useDispatch, useSelector } from 'react-redux'
 import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom'
+import { useState } from 'react'
 
 const App = () => {
   const dispatch = useDispatch()
 
   const blogs = useSelector(selectSortedBlogs)
   const login = useSelector((state) => state.login)
+  const [users, setUsers] = useState([])
 
   const blogItems = useMemo(() => {
     if (!login) {
@@ -25,7 +29,7 @@ const App = () => {
   }, [blogs, login])
 
   useEffect(() => {
-    const loggedUserJSON = window.localStorage.getItem('loggedNoteappUser')
+    const loggedUserJSON = window.localStorage.getItem('loggedBlogAppUser')
     if (loggedUserJSON) {
       const user = JSON.parse(loggedUserJSON)
       dispatch(setLogin(user))
@@ -35,6 +39,19 @@ const App = () => {
   useEffect(() => {
     dispatch(initializeBlogs())
   }, [dispatch])
+
+  useEffect(() => {
+    const fetchUsers = async () => {
+      try {
+        const data = await userService.getAll()
+        setUsers(data)
+      } catch (error) {
+        console.error('Error fetching users:', error)
+      }
+    }
+
+    fetchUsers()
+  })
 
   const newBlogRef = useRef()
 
@@ -84,7 +101,7 @@ const App = () => {
             </div>
           }
         />
-        <Route path="/users" element={<p>todo</p>} />
+        <Route path="/users" element={<Users users={users}></Users>} />
         <Route
           path="/"
           element={
