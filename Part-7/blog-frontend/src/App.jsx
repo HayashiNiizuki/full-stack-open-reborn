@@ -4,6 +4,7 @@ import Login from './components/Login'
 import NewBlog from './components/NewBlog'
 import Notification from './components/Notification'
 import Users from './components/Users'
+import User from './components/User'
 import userService from './services/users'
 import Toggleable from './components/Toggleable.jsx'
 import './App.css'
@@ -102,6 +103,7 @@ const App = () => {
           }
         />
         <Route path="/users" element={<Users users={users}></Users>} />
+        <Route path="/users/:id" element={<User users={users}></User>} />
         <Route
           path="/"
           element={
