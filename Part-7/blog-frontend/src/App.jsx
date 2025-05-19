@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import Blog from './components/Blog'
 import Login from './components/Login'
 import NewBlog from './components/NewBlog'
@@ -11,8 +11,7 @@ import './App.css'
 import { createBlog, initializeBlogs, selectSortedBlogs } from './reducers/blogReducer'
 import { setLogin } from './reducers/loginReducer.js'
 import { useDispatch, useSelector } from 'react-redux'
-import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom'
-import { useState } from 'react'
+import { BrowserRouter as Router, Link, Route, Routes } from 'react-router-dom'
 
 const App = () => {
   const dispatch = useDispatch()
@@ -25,7 +24,7 @@ const App = () => {
     if (!login) {
       return null
     } else {
-      return blogs.map((blog) => <Blog key={blog.id} _blog={blog} canDelete={blog.user.id === login.id} />)
+      return blogs.map((blog) => <Blog key={blog.id} _blog={blog} canDelete={blog.user.id === login.id}/>)
     }
   }, [blogs, login])
 
@@ -85,7 +84,7 @@ const App = () => {
           users
         </Link>
       </div>
-      <Notification />
+      <Notification/>
       <Login></Login>
       <Routes>
         <Route
@@ -102,8 +101,8 @@ const App = () => {
             </div>
           }
         />
-        <Route path="/users" element={<Users users={users}></Users>} />
-        <Route path="/users/:id" element={<User users={users}></User>} />
+        <Route path="/users" element={<Users users={users}></Users>}/>
+        <Route path="/users/:id" element={<User users={users}></User>}/>
         <Route
           path="/"
           element={

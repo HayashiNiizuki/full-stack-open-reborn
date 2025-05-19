@@ -1,7 +1,6 @@
 import { useState } from 'react'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { login, logout } from '../reducers/loginReducer'
-import { useDispatch } from 'react-redux'
 
 const Login = () => {
   const [username, setUsername] = useState('')

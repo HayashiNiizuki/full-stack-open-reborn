@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { useDispatch } from 'react-redux'
-import { updateBlog, deleteBlog } from '../reducers/blogReducer'
+import { deleteBlog, updateBlog } from '../reducers/blogReducer'
 
 const Blog = ({ _blog, canDelete }) => {
   const dispatch = useDispatch()
