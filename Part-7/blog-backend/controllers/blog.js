@@ -18,6 +18,15 @@ blogRouter.get('/:id', async (request, response) => {
   }
 })
 
+blogRouter.post('/:id/comments', async (request, response) => {
+  const blogUpdated = await Blog.findByIdAndUpdate(
+    request.params.id,
+    { $push: { comments: request.body.comment } },
+    { new: true }
+  )
+  response.json(blogUpdated)
+})
+
 blogRouter.delete('/:id', tokenExtractor, async (request, response) => {
   const id = request.params.id
   const token = request.token

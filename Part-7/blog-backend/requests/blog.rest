@@ -74,3 +74,11 @@ Content-Type: application/json
 
 ###
 POST http://localhost:3003/api/testing/reset
+
+### 
+POST http://localhost:3003/api/blogs/681c8b4b0cbdbff514a71fd3/comments
+Content-Type: application/json
+
+{
+    "comment": "test"
+}
