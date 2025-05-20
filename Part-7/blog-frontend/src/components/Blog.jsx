@@ -1,16 +1,29 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useDispatch } from 'react-redux'
 import { commentBlog, updateBlog } from '../reducers/blogReducer'
 import { useParams } from 'react-router-dom'
 
 const Blog = ({ blogs }) => {
-  if (blogs === null) return
-  const id = useParams().id
+  const { id } = useParams()
   const dispatch = useDispatch()
-  const _blog = blogs.find((blog) => blog.id == id)
-  if (_blog == null) return
-  const [blog, setBlog] = useState(_blog)
+  const [blog, setBlog] = useState(null)
   const [comment, setComment] = useState('')
+
+  useEffect(() => {
+    if (blogs) {
+      const found = blogs.find((b) => b.id == id)
+      setBlog(found || null)
+    }
+  }, [blogs, id])
+
+  if (!blogs) {
+    return <div>Loading blogs...</div>
+  }
+
+  if (!blog) {
+    return <div>Blog not found.</div>
+  }
+
   const addLike = async (_event) => {
     const newBlog = { ...blog, likes: blog.likes + 1 }
     const updatedBlog = await dispatch(updateBlog({ id: blog.id, newBlog }))
@@ -32,7 +45,7 @@ const Blog = ({ blogs }) => {
     <div className="Blog">
       <h3>{blog.title}</h3>
       <div>
-        <link rel={blog.url} />
+        <a rel={blog.url} />
         likes {blog.likes}
         <button id="like-button" onClick={addLike}>
           like
