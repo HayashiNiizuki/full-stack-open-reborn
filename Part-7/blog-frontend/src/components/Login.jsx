@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { login, logout } from '../reducers/loginReducer'
+import { TextField, Button } from '@mui/material'
 
 const Login = () => {
   const [username, setUsername] = useState('')
@@ -21,9 +22,10 @@ const Login = () => {
   if (loginfo === null) {
     return (
       <form onSubmit={handleLogin}>
-        <div>
-          username
-          <input
+        <div className="TextField">
+          <TextField
+            size="small"
+            label="username"
             id="username-input"
             type="text"
             value={username}
@@ -31,26 +33,30 @@ const Login = () => {
             onChange={({ target }) => setUsername(target.value)}
           />
         </div>
-        <div>
-          password
-          <input
+        <div className="TextField">
+          <TextField
+            size="small"
+            label="password"
             id="password-input"
             type="password"
             value={password}
             name="Password"
+            sx={{ height: 40 }}
             onChange={({ target }) => setPassword(target.value)}
           />
         </div>
-        <button id="login-button" type="submit">
+        <Button size="small" variant="contained" color="primary" id="login-button" type="submit">
           login
-        </button>
+        </Button>
       </form>
     )
   } else {
     return (
-      <div>
-        <p>{loginfo.name} logged-in</p>
-        <button onClick={handleLogout}>logout</button>
+      <div style={{ marginTop: 5 }}>
+        {loginfo.name} logged-in
+        <Button style={{ marginLeft: 5 }} size="small" variant="contained" color="primary" onClick={handleLogout}>
+          logout
+        </Button>
       </div>
     )
   }

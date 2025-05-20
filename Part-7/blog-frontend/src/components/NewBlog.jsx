@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { TextField, Button } from '@mui/material'
 
 const NewBlog = ({ addNewBlog }) => {
   const [title, setTitle] = useState('')
@@ -20,31 +21,36 @@ const NewBlog = ({ addNewBlog }) => {
     <div>
       <h2>add new blog</h2>
       <form onSubmit={handleSubmit}>
-        title:
-        <input
-          id="title-input"
-          value={title}
-          placeholder="type title here"
-          onChange={(event) => setTitle(event.target.value)}
-        ></input>
-        <br/>
-        author:
-        <input
-          id="author-input"
-          value={author}
-          placeholder="type author here"
-          onChange={(event) => setAuthor(event.target.value)}
-        ></input>
-        <br/>
-        url:
-        <input
-          id="url-input"
-          value={url}
-          placeholder="type your url here"
-          onChange={(event) => setUrl(event.target.value)}
-        ></input>
-        <br/>
-        <button id="create-button" type="submit">create</button>
+        <div className="TextField">
+          <TextField
+            id="title-input"
+            label="title"
+            value={title}
+            placeholder="type title here"
+            onChange={(event) => setTitle(event.target.value)}
+          />
+        </div>
+        <div className="TextField">
+          <TextField
+            id="author-input"
+            label="author"
+            value={author}
+            placeholder="type author here"
+            onChange={(event) => setAuthor(event.target.value)}
+          />
+        </div>
+        <div className="TextField">
+          <TextField
+            id="url-input"
+            label="url"
+            value={url}
+            placeholder="type your url here"
+            onChange={(event) => setUrl(event.target.value)}
+          />
+        </div>
+        <Button size="small" variant="contained" color="primary" id="create-button" type="submit">
+          create
+        </Button>
       </form>
     </div>
   )

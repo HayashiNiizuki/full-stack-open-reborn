@@ -13,6 +13,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { BrowserRouter as Router, Link, Route, Routes } from 'react-router-dom'
 import BlogEntrance from './components/BlogEntrance.jsx'
 import Blog from './components/Blog.jsx'
+import { Container, AppBar, Toolbar, Button } from '@mui/material'
 
 const App = () => {
   const dispatch = useDispatch()
@@ -68,61 +69,63 @@ const App = () => {
     }
   }
 
-  const padding = {
-    padding: 5
-  }
-
   return (
-    <Router>
-      <div>
-        <Link style={padding} to="/">
-          home
-        </Link>
-        <Link style={padding} to="/blogs">
-          blogs
-        </Link>
-        <Link style={padding} to="/users">
-          users
-        </Link>
-      </div>
-      <Notification />
-      <Login></Login>
-      <Routes>
-        <Route
-          path="/blogs"
-          element={
-            <div>
-              <h2>blogs</h2>
-              {login && blogItems}
-              {login && (
-                <Toggleable buttonLabel="New blog" ref={newBlogRef}>
-                  <NewBlog addNewBlog={addNewBlogFunc}></NewBlog>
-                </Toggleable>
-              )}
-            </div>
-          }
-        />
-        <Route path="/blogs/:id" element={<Blog blogs={blogs}/>}/>
-        <Route path="/users" element={<Users users={users}></Users>} />
-        <Route path="/users/:id" element={<User users={users}></User>} />
-        <Route
-          path="/"
-          element={
-            <p>
-              License Unless otherwise stated, all content on this website (including text, images, and original
-              code snippets) is licensed under a Creative Commons Attribution-NonCommercial-NoDerivatives 4.0
-              International License (CC BY-NC-ND 4.0). You are free to share the material with proper attribution,
-              but you may not use it for commercial purposes or create derivative works. Website source code (if
-              publicly available) may be licensed separately under an open-source license, such as the MIT License
-              or GPL. Please refer to the specific repository for details. Disclaimer This website is provided "as
-              is" without warranty of any kind. The owner is not responsible for any damages or issues caused by
-              the use of this website or the information contained herein. For inquiries, please contact:
-              [hayashi_niizuki@outlook.com]
-            </p>
-          }
-        />
-      </Routes>
-    </Router>
+    <Container>
+      <Router>
+        <div>
+          <AppBar position="static">
+            <Toolbar>
+              <Button color="inherit" component={Link} to="/">
+                home
+              </Button>
+              <Button color="inherit" component={Link} to="/blogs">
+                blogs
+              </Button>
+              <Button color="inherit" component={Link} to="/users">
+                users
+              </Button>
+            </Toolbar>
+          </AppBar>
+        </div>
+        <Notification />
+        <Login></Login>
+        <Routes>
+          <Route
+            path="/blogs"
+            element={
+              <div>
+                <h2>blogs</h2>
+                {login && blogItems}
+                {login && (
+                  <Toggleable buttonLabel="New blog" ref={newBlogRef}>
+                    <NewBlog addNewBlog={addNewBlogFunc}></NewBlog>
+                  </Toggleable>
+                )}
+              </div>
+            }
+          />
+          <Route path="/blogs/:id" element={<Blog blogs={blogs} />} />
+          <Route path="/users" element={<Users users={users}></Users>} />
+          <Route path="/users/:id" element={<User users={users}></User>} />
+          <Route
+            path="/"
+            element={
+              <p>
+                License Unless otherwise stated, all content on this website (including text, images, and original
+                code snippets) is licensed under a Creative Commons Attribution-NonCommercial-NoDerivatives 4.0
+                International License (CC BY-NC-ND 4.0). You are free to share the material with proper
+                attribution, but you may not use it for commercial purposes or create derivative works. Website
+                source code (if publicly available) may be licensed separately under an open-source license, such
+                as the MIT License or GPL. Please refer to the specific repository for details. Disclaimer This
+                website is provided "as is" without warranty of any kind. The owner is not responsible for any
+                damages or issues caused by the use of this website or the information contained herein. For
+                inquiries, please contact: [hayashi_niizuki@outlook.com]
+              </p>
+            }
+          />
+        </Routes>
+      </Router>
+    </Container>
   )
 }
 

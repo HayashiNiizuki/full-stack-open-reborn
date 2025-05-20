@@ -3,6 +3,10 @@ h2 {
     font-style: italic;
 }
 
+.TextField {
+    margin: 5px 0px 5px;
+}
+
 .error {
     color: red;
     background: lightgrey;

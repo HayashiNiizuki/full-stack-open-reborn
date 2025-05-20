@@ -1,5 +1,6 @@
 import { forwardRef, useImperativeHandle, useState } from 'react'
 import PropTypes from 'prop-types'
+import { Button } from '@mui/material'
 
 // eslint-disable-next-line react/display-name
 const Toggleable = forwardRef((props, ref) => {
@@ -21,11 +22,27 @@ const Toggleable = forwardRef((props, ref) => {
   return (
     <div>
       <div style={hideWhenVisible}>
-        <button onClick={toggleVisibility}>{props.buttonLabel}</button>
+        <Button
+          style={{ marginTop: 5 }}
+          size="small"
+          variant="contained"
+          color="primary"
+          onClick={toggleVisibility}
+        >
+          {props.buttonLabel}
+        </Button>
       </div>
       <div style={showWhenVisible}>
         {props.children}
-        <button onClick={toggleVisibility}>cancel</button>
+        <Button
+          style={{ marginTop: 5 }}
+          size="small"
+          variant="contained"
+          color="primary"
+          onClick={toggleVisibility}
+        >
+          cancel
+        </Button>
       </div>
     </div>
   )

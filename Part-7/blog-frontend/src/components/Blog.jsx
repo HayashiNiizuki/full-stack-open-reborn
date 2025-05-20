@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 import { useDispatch } from 'react-redux'
 import { commentBlog, updateBlog } from '../reducers/blogReducer'
 import { useParams } from 'react-router-dom'
+import { TextField, Button } from '@mui/material'
 
 const Blog = ({ blogs }) => {
   const { id } = useParams()
@@ -47,21 +48,25 @@ const Blog = ({ blogs }) => {
       <div>
         <a rel={blog.url} />
         likes {blog.likes}
-        <button id="like-button" onClick={addLike}>
+        <Button style={{ marginLeft: 5 }} size="small" variant="contained" color="primary" id="like-button" onClick={addLike}>
           like
-        </button>
+        </Button>
         <p>{`added by ${blog.author}`}</p>
-        <h3>comments</h3>
         <form onSubmit={addComment}>
-          <input
+          <TextField
+            label="comment"
             type="text"
             name="comment"
             value={comment}
             placeholder="comment here"
             onChange={(event) => setComment(event.target.value)}
           />
-          <button type="submit">add comment</button>
+          <br />
+          <Button style={{ marginTop: 5 }} size="small" variant="contained" color="primary" type="submit">
+            add comment
+          </Button>
         </form>
+        <h2>Comments</h2>
         {blog.comments.map((comment, index) => (
           <li key={index}>{comment}</li>
         ))}
