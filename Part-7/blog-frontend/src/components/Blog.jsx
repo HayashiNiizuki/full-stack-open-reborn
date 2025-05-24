@@ -35,6 +35,8 @@ const Blog = ({ blogs }) => {
 
   const addComment = async (event) => {
     event.preventDefault()
+    if (comment === null || comment.length == 0)
+      return
     const updatedBlog = await dispatch(commentBlog({ id: blog.id, comment: comment }))
     if (updateBlog) {
       setComment('')
